@@ -15,7 +15,15 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "gosugamers-api": "0.1.2",
-    "python-shell": "0.4.0"
+    "python-shell": "0.4.0",
+    "mongoose": "~4.13.1",
+    "passport": "~0.3.2",
+    "passport-local": "~1.0.0",
+    "passport-facebook": "~2.1.1",
+    "passport-twitter": "~1.0.4",
+    "passport-google-oauth": "~1.0.0",
+    "connect-flash": "~0.1.1",
+    "bcrypt-nodejs": "latest"
   },
   "devDependencies": {
     "request": "^2.81.0",
