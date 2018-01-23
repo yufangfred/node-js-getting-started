@@ -54,17 +54,17 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 // 	res.render('pages/s');
 // });
 
-// app.get('/r', (req, res)=>{
-// 	var gosu = require('gosugamers-api');
-// 	var urls;
+app.get('/r', (req, res)=>{
+	var gosu = require('gosugamers-api');
+	var urls;
 
-// 	gosu.fetchMatchUrls('lol', (err, urlsl) => {
+	gosu.fetchMatchUrls('lol', (err, urlsl) => {
 	
 		
-// 		urls = urlsl;
+		urls = urlsl;
 
-// 		res.render('pages/r.ejs' , {
-// 			urls: urls
-// 		});
-// 	});
-// });
+		res.render('pages/r.ejs' , {
+			urls: urls
+		});
+	});
+});
