@@ -68,6 +68,15 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
+
+    // process update matches
+    app.get('/update_matches', (req, res) => {
+        usePython();
+        res.render('update_matches');
+    });
+
+
+
 };
 
 // route middleware to make sure a user is logged in
@@ -79,4 +88,18 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+function usePython() {
+    var spawn = require("child_process").spawn;
+    var process = spawn('python',["pyscripts/getmatches.py"]);
+
+    process.stdout.on('data', function (data){
+        // Do something with the data returned from python script
+
+        //console.log(data.tostring());
+        console.log(data.toString('utf8'));
+        console.log('caught on javascript');
+
+    });
 }
