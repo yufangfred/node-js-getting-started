@@ -1,7 +1,7 @@
 """
 Prints live, upcoming and recent matches of a all games
 """
-from gosu_gamers import gg_match
+#from gosu_gamers import gg_match
 import pymongo
 import sys
 if sys.version_info[0] < 3:
