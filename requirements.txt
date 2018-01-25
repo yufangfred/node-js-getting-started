@@ -1,0 +1,4 @@
+requests
+lxml
+GIT+https://github.com/Granitas/GosuGamers-API/
+pymongo

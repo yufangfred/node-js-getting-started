@@ -3,6 +3,12 @@ Prints live, upcoming and recent matches of a all games
 """
 from gosu_gamers import gg_match
 import pymongo
+import sys
+if sys.version_info[0] < 3:
+    raise Exception("Must be using Python 3")
+
+print('running test.py')
+
 """
 def print_games(what_to_print=None):
 	ggms = gg_match.MatchScraper()
