@@ -98,6 +98,56 @@ module.exports = function(app, passport) {
     });
 
 
+    app.get('/run_py2', (req, res)=>{
+        var PythonShell = require('python-shell');
+     
+        var options = {
+          mode: 'text',
+          pythonPath: 'python3',
+          pythonOptions: ['-u'],
+          args: ['value1', 'value2', 'value3']
+        };
+         
+        PythonShell.run('pyscripts/test.py', options, function (err, results) {
+          if (err) throw err;
+          // results is an array consisting of messages collected during execution 
+          console.log('results: %j', results);
+        });
+
+
+
+    });
+
+    app.get('/matchticker', (req, res)=>{
+        var PythonShell = require('python-shell');
+     
+        var options = {
+          mode: 'text',
+          pythonPath: 'python3',
+          pythonOptions: ['-u'],
+          args: ['value1', 'value2', 'value3']
+        };
+         
+        PythonShell.run('pyscripts/matchticker.py', options, function (err, results) {
+            if (err) throw err;
+            // results is an array consisting of messages collected during execution 
+            console.log('results: %j', results);
+
+            const fs = require('fs');
+
+            let rawdata = fs.readFileSync('matchticker.json');  
+            let student = JSON.parse(rawdata); 
+            //console.log("TEEHEE"); 
+            //console.log(student);
+            //let obj = JSON.parse(student);
+            console.log(student.games);
+            res.render('pages/matchticker.ejs' , {
+                tickerjson: student
+            });
+
+        });
+    });
+
 
 };
 

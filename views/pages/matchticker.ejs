@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+  <div class = "container"> 
+  <% tickerjson.games.forEach(function(r) { %>
+    <%= r %>
+  <% }); %>
+
+  <ul>
+    <% tickerjson.games.forEach(function(drink) { %>
+        <li><%= drink["game"] %> 
+        <div><%= drink["simple_title"] %> </div>
+        <div><%= drink["team 1"]["name"] %> vs <%= drink["team 2"]["name"] %> </div>
+        <div>odd: <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %> </div>
+        <div>live in: <%= drink["live in"] %> </div>
+        <div>match_id: <%= drink["match_id"] %> </div>
+
+        </li>
+
+    <% }); %>
+  </ul>
+  </div>
+
+
+
+</body>
+</html>
