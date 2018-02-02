@@ -148,6 +148,16 @@ module.exports = function(app, passport) {
         });
     });
 
+    // process placing bet form
+    app.post('/placebet', (req, res) => {
+        console.log('received placebet request');
+
+        console.log('You sent sweep cash "' + req.body.whichteam + '".');
+        console.log('You sent sweep cash "' + req.body.JSONSTRING + '".');
+        console.log('You sent sweep cash "' + req.body.moneybet + '".');
+        
+    });
+
 
 };
 

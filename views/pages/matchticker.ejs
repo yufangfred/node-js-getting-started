@@ -8,18 +8,73 @@
 
   <% include ../partials/nav.ejs %>
   <div class = "container"> 
-  <% tickerjson.games.forEach(function(r) { %>
-    <%= r %>
-  <% }); %>
 
   <ul>
-    <% tickerjson.games.forEach(function(drink) { %>
-        <li><%= drink["game"] %> 
-        <div><%= drink["simple_title"] %> </div>
-        <div><%= drink["team 1"]["name"] %> vs <%= drink["team 2"]["name"] %> </div>
-        <div>odd: <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %> </div>
-        <div>live in: <%= drink["live in"] %> </div>
-        <div>match_id: <%= drink["match_id"] %> </div>
+    <% tickerjson.games.forEach(function(drink, i) { %>
+        <li>
+
+	        <div><%= drink["simple_title"] %> </div>
+	        <div><%= drink["team 1"]["name"] %> vs <%= drink["team 2"]["name"] %> </div>
+	        <div>odd: <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %> </div>
+	        <div>live in: <%= drink["live in"] %> </div>
+	        <div>match_id: <%= drink["match_id"] %> </div>
+
+			<!-- Button trigger modal -->
+			<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm<%= i %>">
+			    Bet!
+			</button>
+
+			<!-- Modal -->
+			<div class="modal fade" id="myModalNorm<%= i %>" tabindex="-1" role="dialog" 
+			     aria-labelledby="myModalLabel" aria-hidden="true">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <!-- Modal Header -->
+			            <div class="modal-header">
+			                <button type="button" class="close" 
+			                   data-dismiss="modal">
+			                       <span aria-hidden="true">&times;</span>
+			                       <span class="sr-only">Close</span>
+			                </button>
+			                <h4 class="modal-title" id="myModalLabel">
+			                    Bet on this match:
+			                </h4>
+			            </div>
+			            
+			            <!-- Modal Body -->
+			            <div class="modal-body">
+			                
+						    <form action="/placebet" method="post">
+						        <fieldset>
+						            <label><div><%= drink["simple_title"] %> </div></label>
+						            <br/>
+						            <label for="whichteam">Choose bet on which teamodd: 
+						            <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %>
+						            </label>
+						            <select name="whichteam">
+									  <option value="team1"><%= drink["team 1"]["name"] %></option>
+									  <option value="team2"><%= drink["team 2"]["name"] %></option>
+									</select>
+
+						   
+						            <input type="hidden" name="JSONSTRING" value="<%= JSON.stringify(drink)%>"/>
+						            <label for="moneybet">Amount to bet: </label>
+						            <input type="number" name="moneybet" required min="1" max="500"/>
+						            <input type="submit" value="Send message" />
+						        </fieldset>
+						    </form>
+			                
+			                
+			            </div>
+			            
+			        </div>
+			    </div>
+			</div>
+
+
+
+
+
 
         </li>
 
