@@ -148,14 +148,90 @@ module.exports = function(app, passport) {
         });
     });
 
-    // process placing bet form
+    
+    /* 
+    Upon recieving the place bet request. 
+    1: recieve the request;
+    2: create a beting record in the database (usrname, bet_on, amount, match_data, etc)
+    3. update user balance
+    4. take to confirm betting page shows user balance and betting result.
+    */
     app.post('/placebet', (req, res) => {
+
         console.log('received placebet request');
 
         console.log('You sent sweep cash "' + req.body.whichteam + '".');
         console.log('You sent sweep cash "' + req.body.JSONSTRING + '".');
         console.log('You sent sweep cash "' + req.body.moneybet + '".');
-        
+        console.log('Current_user'+ req.user._id);
+        let match = JSON.parse(req.body.JSONSTRING);
+
+        let betting_record = require('./models/bet_record');
+
+        let new_record = new betting_record({
+              team2: {
+                bet: match["team 2"].bet,
+                name: match["team 2"].name
+              },
+              tournament: match.tounament,
+              simple_title: match.simple_title,
+              team1: {
+                bet: match["team 1"].bet,
+                name: match["team 1"].name
+              },
+              url: match.url,
+              game: match.game,
+              meta: req.body.JSONSTRING,
+              bet_on: req.body.whichteam,
+              amount: req.body.moneybet,
+              usr_id: req.user._id
+        });
+
+        new_record.save(function(err) {
+          if (err) throw err;
+          betting_record.find({}, function(err, users) {
+              if (err) throw err;
+
+              // object of all the users
+              console.log(users);
+         });
+        });
+
+        betting_record.find({}, function(err, users) {
+          if (err) throw err;
+
+          // object of all the users
+          console.log(users);
+        });
+
+        res.render('pages/confirm.ejs', {
+            team: req.body.whichteam,
+            json_string: req.body.JSONSTRING,
+            moneybet: req.body.moneybet
+        });
+
+
+    });
+
+    app.get('/testdb', (req, res) => {
+
+        var User = require('./models/bet_record');
+
+        // create a new user called chris
+        var chris = new User({
+          name: 'Chris',
+          username: 'sevilayha',
+          password: 'password' 
+        });
+
+
+        User.find({}, function(err, users) {
+          if (err) throw err;
+
+          // object of all the users
+          console.log(users);
+        });
+
     });
 
 
