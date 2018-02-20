@@ -27,7 +27,8 @@
     "passport-google-oauth": "~1.0.0",
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.4",
-    "python-shell": "0.4.0"
+    "python-shell": "0.4.0",
+    "startbootstrap-grayscale": "^4.0.0"
   },
   "devDependencies": {
     "request": "^2.81.0",
