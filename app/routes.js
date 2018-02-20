@@ -41,8 +41,14 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
+        let betting_record = require('./models/bet_record');
+        betting_record.find({usr_id : req.user._id}, (err, record) => {
+            if (err) throw err;
+
+            res.render('profile.ejs', {
+                user : req.user, // get the user out of session and pass to template
+                records: record
+            });        
         });
     });
 
@@ -63,7 +69,7 @@ module.exports = function(app, passport) {
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/matchticker', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -92,7 +98,6 @@ module.exports = function(app, passport) {
             if (err){
                 throw err;
             };
-
             //console.log('finished');
         });
     });
@@ -147,7 +152,6 @@ module.exports = function(app, passport) {
 
         });
     });
-
     
     /* 
     Upon recieving the place bet request. 
@@ -167,7 +171,9 @@ module.exports = function(app, passport) {
         let match = JSON.parse(req.body.JSONSTRING);
 
         let betting_record = require('./models/bet_record');
+        let User = require('./models/user');
 
+        // create a new match-betting record
         let new_record = new betting_record({
               team2: {
                 bet: match["team 2"].bet,
@@ -187,21 +193,20 @@ module.exports = function(app, passport) {
               usr_id: req.user._id
         });
 
+        // save the betting record
         new_record.save(function(err) {
           if (err) throw err;
           betting_record.find({}, function(err, users) {
               if (err) throw err;
 
               // object of all the users
-              console.log(users);
+              //console.log(users);
          });
-        });
+        }); 
 
-        betting_record.find({}, function(err, users) {
+        //update the user balance
+        User.findOneAndUpdate({ _id: req.user._id }, { $inc: { balance: -req.body.moneybet } }, function(err, user) {
           if (err) throw err;
-
-          // object of all the users
-          console.log(users);
         });
 
         res.render('pages/confirm.ejs', {
@@ -210,27 +215,6 @@ module.exports = function(app, passport) {
             moneybet: req.body.moneybet
         });
 
-
-    });
-
-    app.get('/testdb', (req, res) => {
-
-        var User = require('./models/bet_record');
-
-        // create a new user called chris
-        var chris = new User({
-          name: 'Chris',
-          username: 'sevilayha',
-          password: 'password' 
-        });
-
-
-        User.find({}, function(err, users) {
-          if (err) throw err;
-
-          // object of all the users
-          console.log(users);
-        });
 
     });
 

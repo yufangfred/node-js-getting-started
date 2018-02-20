@@ -21,7 +21,8 @@ var betSchema = new Schema({
   meta: String,
   bet_on: String,
   amount: Number,
-  usr_id: String
+  usr_id: String,
+  date: { type: Date, default: Date.now }
 });
 
 // the schema is useless so far
