@@ -2,27 +2,33 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-
+   
   <% include ../partials/nav.ejs %>
   <div class = "container"> 
 
-  <ul>
+  	<div class="main-container" style="float:left;position: relative;left: 50%;">
+    <div class="fixer-container" style="float:left;position: relative;left: -50%;">
+  	<ul class="list-group" style="width:100%">
     <% tickerjson.games.forEach(function(drink, i) { %>
-        <li>
-
-	        <div><%= drink["simple_title"] %> </div>
-	        <div><%= drink["team 1"]["name"] %> vs <%= drink["team 2"]["name"] %> </div>
-	        <div>odd: <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %> </div>
-	        <div>live in: <%= drink["live in"] %> </div>
-	        <div>match_id: <%= drink["match_id"] %> </div>
+    		<li class="list-group-item">
+    		<div style="display: block;;">
+	        
+		        <div><a href='<%= drink['url'] %>'><%= drink["team 1"]["name"] %> vs <%= drink["team 2"]["name"] %> </a></div>
+		        <div>odd: <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %> </div>
+		        <div>live in: <%= drink["live in"] %> </div>
+	        </div>
+			
 
 			<!-- Button trigger modal -->
-			<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm<%= i %>">
-			    Bet!
-			</button>
+			<div style="display: block;">
+				<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm<%= i %>">
+				    Bet!
+				</button>
+			</div>
 
 			<!-- Modal -->
 			<div class="modal fade" id="myModalNorm<%= i %>" tabindex="-1" role="dialog" 
@@ -71,15 +77,18 @@
 			    </div>
 			</div>
 
+			</li>
 
 
 
 
 
-        </li>
 
     <% }); %>
-  </ul>
+    </ul>
+    </div>
+    </div>
+
   </div>
 
 
