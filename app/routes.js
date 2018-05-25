@@ -208,7 +208,7 @@ module.exports = function(app, passport) {
           if (err) throw err;
         });
 
-        res.render('pages/profile.ejs', {
+        res.render('pages/confirm.ejs', {
             team: req.body.whichteam,
             json_string: req.body.JSONSTRING,
             moneybet: req.body.moneybet
