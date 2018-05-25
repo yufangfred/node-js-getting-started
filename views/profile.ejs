@@ -84,10 +84,14 @@ $(document).ready(function() {
             } else if(data['status'] == 'Upcoming') {
                 $( "#upcoming" ).append("<a href='" + drink['url'] + "'> " +  drink["simple_title"] + " </a><br/>" );
             } else if (data['status'] == 'Complete') {
-                $("#past-games").append("<a href='" + drink['url'] + "'> " +  drink["simple_title"] + " </a></br>" );
-
-
-                $("#bbb").html("Hello World");
+                $("#past-games").append("<a href='" + drink['url'] + "'> " +  drink["simple_title"] + " </a>" );
+                let num = $("#bbb").text();
+                if(data["home"]['score'] > data['away']['score']) {
+                    $("#past-games").append("<div style='color:red'>" + data['home']['name'] +" won! </br>" + "</div>");
+                } else {
+                    $("#past-games").append("<div style='color:red'>" + data['away']['name'] +" won! </br>" + "</div>");
+                }
+                $('#bbb').html(parseInt($('#bbb').html(), 10)+math.random()* drink["amount"]);
             }
             console.log(data);
         });
