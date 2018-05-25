@@ -13,13 +13,16 @@
   	<div class="main-container" style="float:left;position: relative;left: 50%;">
     <div class="fixer-container" style="float:left;position: relative;left: -50%;">
   	<ul class="list-group" style="width:100%">
-    <% tickerjson.games.forEach(function(drink, i) { %>
+    <% tickerjson.games.forEach(function(drink, i) {  	 %>
+
+
     		<li class="list-group-item">
     		<div style="display: block;;">
 	        
 		        <div><a href='<%= drink['url'] %>'><%= drink["team 1"]["name"] %> vs <%= drink["team 2"]["name"] %> </a></div>
 		        <div>odd: <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %> </div>
 		        <div>live in: <%= drink["live in"] %> </div>
+		        <div><%= drink["game"] %></div>
 	        </div>
 			
 
@@ -50,23 +53,25 @@
 			            <!-- Modal Body -->
 			            <div class="modal-body">
 			                
-						    <form action="/placebet" method="post">
+						    <form action="/placebet" method="post" id="myForm">
 						        <fieldset>
 						            <label><div><%= drink["simple_title"] %> </div></label>
 						            <br/>
-						            <label for="whichteam">Choose bet on which teamodd: 
 						            <%= drink["team 1"]["bet"] %> vs <%= drink["team 2"]["bet"] %>
+						            <br/>
+						            <label for="whichteam">Choose bet on which team
 						            </label>
 						            <select name="whichteam">
 									  <option value="team1"><%= drink["team 1"]["name"] %></option>
 									  <option value="team2"><%= drink["team 2"]["name"] %></option>
 									</select>
 
-						   
+						   			
 						            <input type="hidden" name="JSONSTRING" value="<%= JSON.stringify(drink)%>"/>
 						            <label for="moneybet">Amount to bet: </label>
+						            <br/>
 						            <input type="number" name="moneybet" required min="1" max="500"/>
-						            <input type="submit" value="Send message" />
+						            <input type="button" value="Send message" onclick="submit_by_tag()"/>
 						        </fieldset>
 						    </form>
 			                
@@ -80,10 +85,6 @@
 			</li>
 
 
-
-
-
-
     <% }); %>
     </ul>
     </div>
@@ -92,6 +93,21 @@
   </div>
 
 
+<script>
+
+function submit_by_tag() {
+	let js = JSON.parse(document.forms["myForm"]["JSONSTRING"].value);
+	if (js["team 1"]["bet"] == '0%' || js["team 2"]["bet"] == '0%') {
+		alert("No betting odd information. Bet on another match!");
+	} else {
+	    document.getElementById("myForm").submit();
+
+	}
+}
+
+
+</script>
 
 </body>
 </html>
+

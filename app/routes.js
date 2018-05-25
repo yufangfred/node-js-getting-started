@@ -208,13 +208,22 @@ module.exports = function(app, passport) {
           if (err) throw err;
         });
 
-        res.render('pages/confirm.ejs', {
+        res.render('pages/profile.ejs', {
             team: req.body.whichteam,
             json_string: req.body.JSONSTRING,
             moneybet: req.body.moneybet
         });
 
 
+    });
+
+    app.post('/getMatchResult', function(req, res){
+        let url = req.body.url;
+        var Gosu = require('gosugamers-api');
+        Gosu.parseMatch(url , function(err,match){
+            //console.log(match);
+            res.send(match);
+        });
     });
 
 

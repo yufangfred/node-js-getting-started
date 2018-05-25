@@ -8,6 +8,7 @@
     <style>
         body        { padding-top:80px; word-wrap:break-word; }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -20,30 +21,38 @@
     <div class="row">
 
         <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="well">
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                     <p>
-                        <strong>id</strong>: <%= user._id %><br/>
                         <strong>email</strong>: <%= user.local.email %><br/>
-                        <strong>password</strong>: <%= user.local.password %><br/>
-                        <strong>current balance</strong>: <%= user.balance %>
+                        <strong>current balance</strong>: <span  id= "bbb" style='color:red'><%= user.balance %></span>
                     </p>
+                    <h4> Live:</h4>
+                    <div id="live"></div>
+
+                    <h4> Upcoming:</h4>
+                    <div id="upcoming"></div>
+                    <h4> Past Games:</h4>
+                    <div id='past-games'></div>
 
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <div class="well">
                 <h3><span class="glyphicon glyphicon-tasks"></span> Betting History</h3>
                     <p>
-                        
                      <% records.forEach(function(drink, i) { %>
                         <strong> <%= drink['date'] %></strong>
-                        <a href='<%= drink['url'] %>'><%= drink["simple_title"]%></a> <br/>
-                        <strong> amount:</strong>
-                        <div style='float:right;display:inline-block;'> <%= drink["amount"] %> </div>
+                        <a href='<%= drink['url'] %>' style='float:right'><%= drink["simple_title"]%></a> <br/>
+                       
+                        <strong>bet on: </strong> <span style='float:right'><%= drink['bet_on'] %></span>
+                        <br/>
+                         <strong> amount:</strong> 
+                         <span style='float:right;display:inline-block;'> <%= drink["amount"] %> </span>
+                        <br/>
                     <% }); %>
                     </p>
             </div>
@@ -52,5 +61,38 @@
     </div>
 
 </div>
+<p id="hiddenRecord" hidden><%= JSON.stringify(records);%></p>
+
+
 </body>
+
 </html>
+
+<script>
+
+
+$(document).ready(function() {
+    var str = $("#hiddenRecord").text(); 
+    var records = JSON.parse(str); //records is match data json display originally on page
+    records.forEach(function(drink, i) { // each json record is called a drink
+        let parameters = {
+            url: drink['url']
+        };
+        $.post( '/getMatchResult',parameters, function(data) {
+            if(data['status'] == 'Live') {
+                $( "#live" ).append("<a href='" + drink['url'] + "'> " +  drink["simple_title"] + " </a> <br/>");
+            } else if(data['status'] == 'Upcoming') {
+                $( "#upcoming" ).append("<a href='" + drink['url'] + "'> " +  drink["simple_title"] + " </a><br/>" );
+            } else if (data['status'] == 'Complete') {
+                $("#past-games").append("<a href='" + drink['url'] + "'> " +  drink["simple_title"] + " </a></br>" );
+
+
+                $("#bbb").html("Hello World");
+            }
+            console.log(data);
+        });
+    });
+});
+
+
+</script>
